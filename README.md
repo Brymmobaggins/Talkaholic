@@ -1,3 +1,3 @@
 # Tribute page 
 
-[Live]()
+[Live](https://brymmobaggins.github.io/tributePage/)
