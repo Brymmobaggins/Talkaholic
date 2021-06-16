@@ -6,7 +6,7 @@
 
 ## Screenshot
 
-![img](../img/Project_Screenshot.png)
+![img](/Users/brymmobaggins/Documents/ Projects/FreeCodeCamp Challenges/Tribute page/img/Project_Screenshot.jpg)
 
 ## Bult with
 
