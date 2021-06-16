@@ -4,10 +4,9 @@
 
 [Live](https://brymmobaggins.github.io/tributePage/)
 
-
 ## Screenshot
 
-(img/Project_Screenshot.png)
+![img!](img/Project_Screenshot.png)
 
 ## Bult with
 
