@@ -1,4 +1,4 @@
-# Tribute page FreeCodeCamp challenge.
+# Tribute page FreeCodeCamp challenge
 
 ## links
 
@@ -6,7 +6,7 @@
 
 ## Screenshot
 
-![img](/Users/brymmobaggins/Documents/ Projects/FreeCodeCamp Challenges/Tribute page/img/Project_Screenshot.jpg)
+![img!c](./img/TributePage_Screenshot.png)
 
 ## Bult with
 
