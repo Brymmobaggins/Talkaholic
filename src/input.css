@@ -6,6 +6,9 @@
 
 @theme {
   --font-Comic: "Comic Neue", "cursive";
+  --color-midnight: #121063;
+  --color-tahiti: #3ab7bf;
+  --color-bermuda: #78dcca;
 }
 
 @layer base {
@@ -15,18 +18,18 @@
     line-height: 1.1;
   }
   h2 {
-    font-size: 1.5rem; 
+    font-size: 1.5rem;
     font-weight: 600;
     line-height: 1.375;
   }
   h3 {
-    font-size: 1.25rem; 
+    font-size: 1.25rem;
     font-weight: 600;
     line-height: 1.375;
   }
 
   p {
-    font-size: 1rem; 
+    font-size: 1rem;
     line-height: 1.625;
   }
 }
