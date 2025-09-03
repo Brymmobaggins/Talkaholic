@@ -15,7 +15,7 @@ function renderMessage(msg) {
   output.innerHTML = `<p class="text-red-600">${msg}</p>`;
 }
 
-async function fetchDefiniton(word) {
+async function fetchDefinition(word) {
   try {
     const response = await fetch(
       `https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(
@@ -35,7 +35,7 @@ async function renderResult() {
   const word = getInputWord();
   if (!word) return;
 
-  const results = await fetchDefiniton(word);
+  const results = await fetchDefinition(word);
   if (results.error) {
     return renderMessage(results.error);
   } else {
@@ -43,8 +43,10 @@ async function renderResult() {
     const phonetic = results[0].phonetics[0]?.text || "No Phonetic available";
     const partOfSpeech = results[0].meanings[0].partOfSpeech;
     const example = results[0].meanings[0].definitions[0].example || "No example available"
+    const synonyms =  results[0].meanings[0].definitions[0].synonyms
 
-    output.innerHTML = `<div class="bg-[#F6F6F6] border-0 rounded-sm p-5 mt-5">
+    output.innerHTML = `
+    <div class="bg-[#F6F6F6] border-0 rounded-sm p-5 mt-5">
       <div class="flex justify-between items-center">
          <h2 class="text-bold">${results[0].word}</h2>
         <svg class="w-6 h-6 text-gray-800 dark:text-white" 
@@ -56,10 +58,12 @@ async function renderResult() {
         <p class="mt-8"><strong>Definition:</strong> ${definition}</p>
         <p><strong>Phonetic:</strong> ${phonetic}</p>
         <p><strong>Part of Speech:</strong> ${partOfSpeech}</p>
-        <p><strong>Part of Speech:</strong> ${example}</p>
+        <p><strong>Example in a sentence:</strong> ${example}</p>
+        <p><strong>Synonyms:</strong> ${synonyms && synonyms.length ? synonyms.join(", ") : "No synonyms"}</p>
       </div>
       `;
   }
+  
 
   document.getElementById("user-input").value = "";
 }

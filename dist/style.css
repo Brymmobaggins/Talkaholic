@@ -235,9 +235,6 @@
   .max-w-md {
     max-width: var(--container-md);
   }
-  .animate-spin {
-    animation: var(--animate-spin);
-  }
   .items-center {
     align-items: center;
   }
