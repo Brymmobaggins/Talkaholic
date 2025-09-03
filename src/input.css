@@ -9,6 +9,10 @@
   --color-midnight: #121063;
   --color-tahiti: #3ab7bf;
   --color-bermuda: #78dcca;
+  --text-color: #636b14;
+    /* --text-color: #636b74; */
+
+  --heading-color: #0c0d0e;
 }
 
 @layer base {
@@ -29,7 +33,7 @@
   }
 
   p {
-    font-size: 1rem;
+    font-size: 1.2rem;
     line-height: 1.625;
   }
 }
