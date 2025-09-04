@@ -43,7 +43,8 @@ async function renderResult() {
     word = word[0].toUpperCase() + word.slice(1);
     
     const definition = results[0].meanings[0].definitions[0].definition;
-    const phonetic = results[0].phonetics[0]?.text || "No Phonetic available";
+    const phonetic = results[0].phonetics[0]?.text || "";
+    const audio  = results[0].phonetics[0]?.audio || "";
     const partOfSpeech = results[0].meanings[0].partOfSpeech;
     const example =
       results[0].meanings[0].definitions[0].example || "No example available";
@@ -60,7 +61,10 @@ async function renderResult() {
         </svg>
       </div>
         <p class="mt-8 text-color"><strong>Definition:</strong> ${definition}</p>
-        <p class="text-color"><strong>Phonetic:</strong> ${phonetic}</p>
+        <p class="text-color"><strong>Phonetic:</strong> ${phonetic || "no phonetic available" }</p>
+
+        ${audio ? `<audio controls src="${audio}"></audio>` : "<p class='text-color'>No audio available</p>"}
+        
         <p class="text-color"><strong>Part of Speech:</strong> ${partOfSpeech}</p>
         <p class="text-color"><strong>Example in a sentence:</strong> ${example}</p>
         <p class="text-color"><strong>Synonyms:</strong> ${
