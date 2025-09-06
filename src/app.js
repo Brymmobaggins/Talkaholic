@@ -87,19 +87,22 @@ async function renderResult() {
 
 let favourites = JSON.parse(localStorage.getItem("favourites")) || [];
 const favouriteTab = document.getElementById("favourite");
+const favouriteListHeader = document.getElementById("favouritelist-header");
+
 function renderFavouriteList() {
   const retrieveWords = JSON.parse(localStorage.getItem("favourites")) || [];
-  favouriteTab.innerHTML = ""
-  
+
+  favouriteTab.innerHTML = "";
+  favouriteListHeader.textContent = "Favourite words";
+  favouriteTab.classList.remove("hidden");
   retrieveWords.forEach((retrieveWord) => {
     favouriteTab.innerHTML += `
-          <div class="bg-[#f9fafa] border-0 rounded-sm p-5 mt-5">
-           <p class="text-color">${retrieveWord}</p>
-          </div>
+           <p class="text-color">${retrieveWord}
+           <button onclick="removeFromFavourites('${retrieveWord}')">❌</button>
+          </p>
         `;
   });
 }
-
 
 function addToFavourites(word) {
   if (!favourites.includes(word)) {
@@ -109,4 +112,11 @@ function addToFavourites(word) {
   } else {
     alert(`${word} is already in favourites!`);
   }
+}
+
+function removeFromFavourites(word) {
+  favourites = favourites.filter((fav) => fav !== word);
+  // update the local storage back to its state
+  localStorage.setItem("favourites", JSON.stringify(favourites));
+  renderFavouriteList();
 }
