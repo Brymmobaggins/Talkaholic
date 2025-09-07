@@ -120,3 +120,12 @@ function removeFromFavourites(word) {
   localStorage.setItem("favourites", JSON.stringify(favourites));
   renderFavouriteList();
 }
+const clearAllBtn = document.getElementById("clear-btn")
+clearAllBtn.addEventListener("click", clearAllFavourites)
+function clearAllFavourites(){
+  localStorage.removeItem("favourites")
+  favourites = []
+  favouriteTab.innerHTML = ""
+  favouriteTab.classList.add("hidden") 
+  favouriteListHeader.textContent = ""
+}
