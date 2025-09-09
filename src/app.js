@@ -55,7 +55,7 @@ async function renderResult() {
     const synonyms = results[0]?.meanings[0]?.definitions[0]?.synonyms || [];
 
     output.innerHTML = `
-    <div class="bg-[#f9fafa] border-0 rounded-sm p-5 mt-5">
+    <div class="bg-[#f9fafa] border-0 rounded-sm p-2.5 mt-5">
       <div class="flex justify-between items-center">
          <h2 class="heading-color">${word}</h2>
          <button type="button" class="border p-1" id="addToFavoriteBtn"
@@ -81,6 +81,7 @@ async function renderResult() {
     </div>
       `;
   }
+  addRecentSearch(word);
 
   document.getElementById("user-input").value = "";
 }
@@ -97,9 +98,9 @@ function renderFavouriteList() {
   favouriteTab.classList.remove("hidden");
   retrieveWords.forEach((retrieveWord) => {
     favouriteTab.innerHTML += `
-           <p class="text-color">${retrieveWord}
+           <div class="text-color">${retrieveWord}
            <button onclick="removeFromFavourites('${retrieveWord}')">❌</button>
-          </p>
+          </div>
         `;
   });
 }
@@ -120,12 +121,38 @@ function removeFromFavourites(word) {
   localStorage.setItem("favourites", JSON.stringify(favourites));
   renderFavouriteList();
 }
-const clearAllBtn = document.getElementById("clear-btn")
-clearAllBtn.addEventListener("click", clearAllFavourites)
-function clearAllFavourites(){
-  localStorage.removeItem("favourites")
-  favourites = []
-  favouriteTab.innerHTML = ""
-  favouriteTab.classList.add("hidden") 
-  favouriteListHeader.textContent = ""
+const clearAllBtn = document.getElementById("clear-btn");
+clearAllBtn.addEventListener("click", clearAllFavourites);
+function clearAllFavourites() {
+  localStorage.removeItem("favourites");
+  favourites = [];
+  favouriteTab.innerHTML = "";
+  favouriteTab.classList.add("hidden");
+  favouriteListHeader.textContent = "";
+}
+
+function addRecentSearch(word) {
+  let recentSearchArr =
+    JSON.parse(localStorage.getItem("recentSearchArr")) || [];
+  recentSearchArr = recentSearchArr.filter((recent) => recent !== word);
+  recentSearchArr.unshift(word);
+  if (recentSearchArr.length > 10) {
+    recentSearchArr.pop();
+  }
+  localStorage.setItem("recentSearchArr", JSON.stringify(recentSearchArr));
+  renderRecentSearch();
+}
+
+function renderRecentSearch() {
+  const resentSearchDiv = document.getElementById("recent-search");
+  let recentSearchArr =
+    JSON.parse(localStorage.getItem("recentSearchArr")) || [];
+  resentSearchDiv.innerHTML = "";
+
+  recentSearchArr.forEach((word) => {
+
+    resentSearchDiv.innerHTML += `
+      <div>${word}</div>
+    `;
+  });
 }

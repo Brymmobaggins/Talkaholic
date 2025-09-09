@@ -23,7 +23,7 @@
               type="search"
               id="user-input"
               class="text-lg p-2 border w-full rounded-sm outline-none"
-              placeholder="Search for a word"
+              placeholder="Search any word"
             />
             <button
               type="button"
@@ -36,19 +36,33 @@
         </div>
       </div>
       <section class="container max-w-md mx-auto">
+        <!-- results -->
         <div class="" id="output"></div>
-        <div class="" id="favourite"></div>
+        <div class="flex justify-between mt-3">
+          <h3 class="heading-color" id="favouritelist-header">
+            Favourite Words
+          </h3>
+          <button class="border p-0.5 rounded-sm" id="clear-btn" type="button">
+            Clear all
+          </button>
+        </div>
+        <!-- favourite -->
+        <div class="bg-[#f9fafa] hidden p-5 text-gray-600" id="favourite"></div>
+        <!-- History container -->
+        <div class="" id="history-container">
+          <h3>Recent search</h3>
+          <div id="recent-search" class="flex gap-1"></div>
+        </div>
       </section>
     </main>
+
     <footer class="border border-[#f6f6f6] fixed bottom-0 left-0 right-0">
       <div
         class="container max-w-md mx-auto flex items-center justify-around py-3 font-bold text-black"
       >
         <button type="button">Home</button>
         <button type="button">Search</button>
-        <button type="button" onclick="">
-          
-        </button>
+        <button type="button">favorite</button>
       </div>
     </footer>
   </body>
