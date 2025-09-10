@@ -38,20 +38,25 @@
       <section class="container max-w-md mx-auto">
         <!-- results -->
         <div class="" id="output"></div>
-        <div class="flex justify-between mt-3">
+        <!-- home section -->
+        <div class="hidden" id="home-section">
+          <h3>Word of the Day</h3>
+          <div id="word-of-day"></div>
+          <!-- recent search section -->
+          <h4 class="mt-5">Recent Searches</h4>
+          <div id="recent-search" class="p-2 flex gap-3"></div>
+        </div>
+        <!-- favourite word section -->
+        <div
+          class="justify-between mt-3 hidden"
+          id="favourite-word-section"
+        >
           <h3 class="heading-color" id="favouritelist-header">
             Favourite Words
           </h3>
           <button class="border p-0.5 rounded-sm" id="clear-btn" type="button">
             Clear all
           </button>
-        </div>
-        <!-- favourite -->
-        <div class="bg-[#f9fafa] hidden p-5 text-gray-600" id="favourite"></div>
-        <!-- History container -->
-        <div class="" id="history-container">
-          <h3>Recent search</h3>
-          <div id="recent-search" class="flex gap-1"></div>
         </div>
       </section>
     </main>
@@ -60,9 +65,27 @@
       <div
         class="container max-w-md mx-auto flex items-center justify-around py-3 font-bold text-black"
       >
-        <button type="button">Home</button>
-        <button type="button">Search</button>
-        <button type="button">favorite</button>
+        <button
+          id="home-btn"
+          type="button"
+          class="text-black border-none p-1.5 rounded-sm hover:bg-blue-600 hover:text-white"
+        >
+          Home
+        </button>
+        <button
+          id="search-btn"
+          type="button"
+          class="text-black border-none p-1.5 rounded-sm hover:bg-blue-600 hover:text-white"
+        >
+          Search
+        </button>
+        <button
+          id="favourite-btn"
+          type="button"
+          class="text-black border-none p-1.5 rounded-sm hover:bg-blue-600 hover:text-white"
+        >
+          Favorite
+        </button>
       </div>
     </footer>
   </body>

@@ -1,6 +1,5 @@
 /** @format */
 
-// alert("Hello World");
 const output = document.getElementById("output");
 document.getElementById("searchBtn").addEventListener("click", renderResult);
 
@@ -87,7 +86,7 @@ async function renderResult() {
 }
 
 let favourites = JSON.parse(localStorage.getItem("favourites")) || [];
-const favouriteTab = document.getElementById("favourite");
+const favouriteTab = document.getElementById("favourite-word-section");
 const favouriteListHeader = document.getElementById("favouritelist-header");
 
 function renderFavouriteList() {
@@ -150,9 +149,122 @@ function renderRecentSearch() {
   resentSearchDiv.innerHTML = "";
 
   recentSearchArr.forEach((word) => {
-
     resentSearchDiv.innerHTML += `
-      <div>${word}</div>
-    `;
+    <div class="bg-[#d1f0f0]">
+      <button class="border-none px-1.5 py-0.75 rounded-sm text-black bg-blue-200 hover:bg-blue-300 hover:cursor-pointer" onclick="renderResultFromHistory('${word}')">${word}</button>
+    <div>`;
   });
 }
+async function renderResultFromHistory(word) {
+  const results = await fetchDefinition(word);
+  if (results.error) {
+    return renderMessage(results.error);
+  } else {
+    let word = results[0]?.word || "No word available";
+    word = word[0].toUpperCase() + word.slice(1);
+
+    const definition =
+      results[0]?.meanings[0]?.definitions[0]?.definition ||
+      "No definition available";
+    const phonetic = results[0].phonetics[0]?.text || "";
+    const audio = results[0].phonetics[0]?.audio || "";
+    const partOfSpeech =
+      results[0]?.meanings[0]?.partOfSpeech || "Not specified";
+    const example =
+      results[0].meanings[0].definitions[0].example || "No example available";
+    const synonyms = results[0]?.meanings[0]?.definitions[0]?.synonyms || [];
+
+    output.innerHTML = `
+    <div class="bg-[#f9fafa] border-0 rounded-sm p-2.5 mt-5">
+      <div class="flex justify-between items-center">
+         <h2 class="heading-color">${word}</h2>
+         <button type="button" class="border p-1" id="addToFavoriteBtn"
+         onclick="addToFavourites('${word}')">Add to bookmark</button>
+       
+      </div>
+        <p class="mt-8 text-color"><strong>Definition:</strong> ${definition}</p>
+        <p class="text-color"><strong>Phonetic:</strong> ${
+          phonetic || "no phonetic available"
+        }</p>
+          <p><strong>Audio</strong>
+        ${
+          audio
+            ? `<audio controls src="${audio}"></audio>`
+            : "<span>No audio available</span>"
+        }</p>
+        
+        <p class="text-color"><strong>Part of speech:</strong> ${partOfSpeech}</p>
+        <p class="text-color"><strong>Example in a sentence:</strong> ${example}</p>
+        <p class="text-color"><strong>Synonyms:</strong> ${
+          synonyms && synonyms.length ? synonyms.join(", ") : "No synonyms"
+        }</p>
+    </div>
+      `;
+  }
+}
+
+function getRandomWord() {
+  const words = [
+    "serendipity",
+    "eloquent",
+    "tranquil",
+    "ephemeral",
+    "resilient",
+  ];
+  const randomIndex = Math.floor(Math.random() * words.length);
+  return words[randomIndex];
+}
+
+async function renderWordOfTheDay() {
+  const wordofthdayDiv = document.getElementById("word-of-day");
+  wordofthdayDiv.innerHTML = "loading ....";
+
+  const randomWord = getRandomWord();
+  const results = await fetchDefinition(randomWord);
+
+  if (results.error) {
+    wordofthdayDiv.innerHTML = `<p class="text-color-600">${results.error}</p>`;
+  } else {
+    const word = results[0]?.word || "No word Available";
+    wordofthdayDiv.innerHTML = `
+       <p>${word}</p>
+    `;
+  }
+}
+
+// Get references to sections
+const homeSection = document.getElementById("home-section");
+const outputSection = document.getElementById("output"); // Search results
+const favouriteSection = document.getElementById("favourite-word-section");
+
+// Get footer buttons
+const homeBtn = document.getElementById("home-btn");
+const searchBtn = document.getElementById("search-btn");
+const favouriteBtn = document.getElementById("favourite-btn");
+
+// Utility function to hide all sections
+function hideAllSections() {
+  homeSection.classList.add("hidden");
+  outputSection.classList.add("hidden");
+  favouriteSection.classList.add("hidden");
+}
+
+// Show Home section
+homeBtn.addEventListener("click", () => {
+  renderWordOfTheDay()
+  hideAllSections();
+  homeSection.classList.remove("hidden");
+  renderRecentSearch();
+});
+
+// Show Search section
+searchBtn.addEventListener("click", () => {
+  hideAllSections();
+  outputSection.classList.remove("hidden");
+});
+
+// Show Favourite section
+favouriteBtn.addEventListener("click", () => {
+  hideAllSections();
+  favouriteSection.classList.remove("hidden");
+});
