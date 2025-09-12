@@ -57,8 +57,8 @@ async function renderResult() {
     <div class="bg-[#f9fafa] border-0 rounded-sm p-2.5 mt-5">
       <div class="flex justify-between items-center">
          <h2 class="heading-color">${word}</h2>
-         <button type="button" class="border p-1" id="addToFavoriteBtn"
-         onclick="addToFavourites('${word}')">Add to bookmark</button>
+         <button type="button" id="addToFavoriteBtn" class="rounded-sm p-1 bg-blue-500 border-0 text-white font-bold" 
+         onclick="addToFavourites('${word}')">Add to favourite</button>
        
       </div>
         <p class="mt-8 text-color"><strong>Definition:</strong> ${definition}</p>
@@ -86,22 +86,41 @@ async function renderResult() {
 }
 
 let favourites = JSON.parse(localStorage.getItem("favourites")) || [];
-const favouriteTab = document.getElementById("favourite-word-section");
 const favouriteListHeader = document.getElementById("favouritelist-header");
+const favouriteSection = document.getElementById("favourite-word-section");
+const clearAllBtn = document.getElementById("clear-btn");
 
 function renderFavouriteList() {
   const retrieveWords = JSON.parse(localStorage.getItem("favourites")) || [];
 
-  favouriteTab.innerHTML = "";
-  favouriteListHeader.textContent = "Favourite words";
-  favouriteTab.classList.remove("hidden");
-  retrieveWords.forEach((retrieveWord) => {
-    favouriteTab.innerHTML += `
-           <div class="text-color">${retrieveWord}
-           <button onclick="removeFromFavourites('${retrieveWord}')">❌</button>
-          </div>
-        `;
-  });
+  if (retrieveWords.length === 0) {
+    favouriteListHeader.textContent = "";
+    favouriteSection.innerHTML = `
+      <div class="text-gray-500 text-center mt-4">
+      <h3 class="text-bold">No favourrite yet </h3>
+        <p>Search for words and tap the <b>Add to Favourite</b> button to save them here.</p>
+      </div>
+    `;
+    clearAllBtn.classList.add("hidden");
+  } else {
+    favouriteListHeader.textContent = "Favourite Words";
+    favouriteSection.innerHTML = "";
+    clearAllBtn.classList.remove("hidden");
+
+    retrieveWords.forEach((retrieveWord) => {
+      favouriteSection.innerHTML += `
+        <div class="flex p-3 justify-between items-center bg-slate-100 rounded mb-2">
+          <span>${retrieveWord}</span>
+          <button 
+            class="font-bold text-red-500 hover:text-red-700" 
+            onclick="removeFromFavourites('${retrieveWord}')"
+          >
+            X
+          </button>
+        </div>
+      `;
+    });
+  }
 }
 
 function addToFavourites(word) {
@@ -120,13 +139,13 @@ function removeFromFavourites(word) {
   localStorage.setItem("favourites", JSON.stringify(favourites));
   renderFavouriteList();
 }
-const clearAllBtn = document.getElementById("clear-btn");
 clearAllBtn.addEventListener("click", clearAllFavourites);
+
 function clearAllFavourites() {
   localStorage.removeItem("favourites");
   favourites = [];
-  favouriteTab.innerHTML = "";
-  favouriteTab.classList.add("hidden");
+  favouriteSection.innerHTML = "";
+  favouriteSection.classList.add("hidden");
   favouriteListHeader.textContent = "";
 }
 
@@ -160,8 +179,7 @@ async function renderResultFromHistory(word) {
   if (results.error) {
     return renderMessage(results.error);
   } else {
-    let word = results[0]?.word || "No word available";
-    word = word[0].toUpperCase() + word.slice(1);
+    const word = results[0]?.word || "No word available";
 
     const definition =
       results[0]?.meanings[0]?.definitions[0]?.definition ||
@@ -177,9 +195,9 @@ async function renderResultFromHistory(word) {
     output.innerHTML = `
     <div class="bg-[#f9fafa] border-0 rounded-sm p-2.5 mt-5">
       <div class="flex justify-between items-center">
-         <h2 class="heading-color">${word}</h2>
-         <button type="button" class="border p-1" id="addToFavoriteBtn"
-         onclick="addToFavourites('${word}')">Add to bookmark</button>
+         <h2 class="heading-color">${word[0].toUpperCase() + word.slice(1)}</h2>
+         <button type="button" class="border p-1 rounded-sm" id="addToFavoriteBtn"
+         onclick="addToFavourites('${word}')">Add to Favourite</button>
        
       </div>
         <p class="mt-8 text-color"><strong>Definition:</strong> ${definition}</p>
@@ -206,15 +224,21 @@ async function renderResultFromHistory(word) {
 function getRandomWord() {
   const words = [
     "serendipity",
+    "color",
+    "shedule",
+    "exhausted",
+    "cart",
     "eloquent",
     "tranquil",
     "ephemeral",
+    "Cholera",
     "resilient",
   ];
   const randomIndex = Math.floor(Math.random() * words.length);
   return words[randomIndex];
 }
 
+// this function render the word of when the home button is click
 async function renderWordOfTheDay() {
   const wordofthdayDiv = document.getElementById("word-of-day");
   wordofthdayDiv.innerHTML = "loading ....";
@@ -226,8 +250,11 @@ async function renderWordOfTheDay() {
     wordofthdayDiv.innerHTML = `<p class="text-color-600">${results.error}</p>`;
   } else {
     const word = results[0]?.word || "No word Available";
+    const definition =
+      results[0]?.meanings[0]?.definitions[0]?.definition || "No definition";
     wordofthdayDiv.innerHTML = `
-       <p>${word}</p>
+       <h4 class="text-lg">${word[0].toUpperCase() + word.slice(1)}</h4>
+       <p>${definition}</p>
     `;
   }
 }
@@ -235,9 +262,7 @@ async function renderWordOfTheDay() {
 // Get references to sections
 const homeSection = document.getElementById("home-section");
 const outputSection = document.getElementById("output"); // Search results
-const favouriteSection = document.getElementById("favourite-word-section");
 
-// Get footer buttons
 const homeBtn = document.getElementById("home-btn");
 const searchBtn = document.getElementById("search-btn");
 const favouriteBtn = document.getElementById("favourite-btn");
@@ -251,7 +276,7 @@ function hideAllSections() {
 
 // Show Home section
 homeBtn.addEventListener("click", () => {
-  renderWordOfTheDay()
+  renderWordOfTheDay();
   hideAllSections();
   homeSection.classList.remove("hidden");
   renderRecentSearch();
@@ -267,4 +292,5 @@ searchBtn.addEventListener("click", () => {
 favouriteBtn.addEventListener("click", () => {
   hideAllSections();
   favouriteSection.classList.remove("hidden");
+  renderFavouriteList;
 });
