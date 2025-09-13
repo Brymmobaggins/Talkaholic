@@ -96,9 +96,9 @@ function renderFavouriteList() {
   if (retrieveWords.length === 0) {
     favouriteListHeader.textContent = "";
     favouriteSection.innerHTML = `
-      <div class="text-gray-500 text-center mt-4">
-      <h3 class="text-bold">No favourrite yet </h3>
-        <p>Search for words and tap the <b>Add to Favourite</b> button to save them here.</p>
+      <div class="text-center mt-4">
+      <h3 class="text-black font-bold">No favourite  word yet </h3>
+        <span class="tex-gray-500">Search for any word and click the <b>Add to Favourite</b> button to save them here.</span>
       </div>
     `;
     clearAllBtn.classList.add("hidden");
@@ -110,7 +110,7 @@ function renderFavouriteList() {
     retrieveWords.forEach((retrieveWord) => {
       favouriteSection.innerHTML += `
         <div class="flex p-3 justify-between items-center bg-slate-100 rounded mb-2">
-          <span>${retrieveWord}</span>
+          <span>${retrieveWord[0].toUpperCase() + retrieveWord.slice(1)}</span>
           <button 
             class="font-bold text-red-500 hover:text-red-700" 
             onclick="removeFromFavourites('${retrieveWord}')"
@@ -139,8 +139,8 @@ function removeFromFavourites(word) {
   localStorage.setItem("favourites", JSON.stringify(favourites));
   renderFavouriteList();
 }
-clearAllBtn.addEventListener("click", clearAllFavourites);
 
+clearAllBtn.addEventListener("click", clearAllFavourites);
 function clearAllFavourites() {
   localStorage.removeItem("favourites");
   favourites = [];
@@ -294,3 +294,5 @@ favouriteBtn.addEventListener("click", () => {
   favouriteSection.classList.remove("hidden");
   renderFavouriteList;
 });
+
+renderFavouriteList();
