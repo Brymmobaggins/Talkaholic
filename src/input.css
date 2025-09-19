@@ -6,12 +6,10 @@
 
 @theme {
   --font-Comic: "Comic Neue", "cursive";
-  --color-midnight: #121063;
-  --color-tahiti: #3ab7bf;
-  --color-bermuda: #78dcca;
-  /* --text-color: #636b14; */
-  --text-color: #636b74;
-  --heading-color: #0c0d0e;
+  --text: #636b74;
+  --bg: #ffff;
+  --heading: #0c0d0e;
+  --btn-bg: #000fff;
 }
 
 @layer base {
@@ -40,3 +38,8 @@
     color: var(--heading-color);
   }
 }
+/* Example Dark Mode styles */
+/* .dark {
+  background-color: #121212;
+  color: #ffffff;
+} */

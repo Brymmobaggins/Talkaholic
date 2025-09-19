@@ -6,7 +6,7 @@ document.getElementById("searchBtn").addEventListener("click", renderResult);
 function getInputWord() {
   const userInput = document.getElementById("user-input").value.trim();
   if (!userInput) {
-    renderMessage("Please Enter a word");
+    renderMessage("Please enter a word and search");
   }
   return userInput;
 }
@@ -22,6 +22,7 @@ async function fetchDefinition(word) {
         word
       )}`
     );
+
     if (!response.ok) {
       throw new Error("Word not found");
     }
@@ -29,6 +30,12 @@ async function fetchDefinition(word) {
   } catch (error) {
     return { error: error.message };
   }
+}
+
+function cacheWord(word, details) {
+  let cachedWords = JSON.parse(localStorage.getItem("cachedWord")) || {};
+  cachedWords[word] = details;
+  localStorage.setItem("cacheWord", JSON.stringify(cachedWords));
 }
 
 async function renderResult() {
@@ -79,9 +86,18 @@ async function renderResult() {
         }</p>
     </div>
       `;
+    const details = {
+      definition,
+      phonetic,
+      audio,
+      partOfSpeech,
+      example,
+      synonyms,
+    };
+ 
+    cacheWord(word, details);
   }
   addRecentSearch(word);
-
   document.getElementById("user-input").value = "";
 }
 
@@ -196,7 +212,7 @@ async function renderResultFromHistory(word) {
     <div class="bg-[#f9fafa] border-0 rounded-sm p-2.5 mt-5">
       <div class="flex justify-between items-center">
          <h2 class="heading-color">${word[0].toUpperCase() + word.slice(1)}</h2>
-         <button type="button" class="border p-1 rounded-sm" id="addToFavoriteBtn"
+         <button type="button" class="border p-1 rounded-sm bg-blue-500 hover:bg-blue-600 cursor-pointer text-white" id="addToFavoriteBtn"
          onclick="addToFavourites('${word}')">Add to Favourite</button>
        
       </div>
@@ -296,3 +312,29 @@ favouriteBtn.addEventListener("click", () => {
 });
 
 renderFavouriteList();
+
+// Grab elements
+// const toggleBtn = document.getElementById("theme-toggle");
+// const body = document.body;
+
+// // Check saved theme on page load
+// const savedTheme = localStorage.getItem("theme");
+// if (savedTheme === "dark") {
+//   body.classList.add("dark");
+//   toggleBtn.textContent = "🌞";
+// }
+
+// // Toggle button click
+// toggleBtn.addEventListener("click", () => {
+//   if (body.classList.contains("dark")) {
+//     // Switch to light mode
+//     body.classList.remove("dark");
+//     localStorage.setItem("theme", "light");
+//     toggleBtn.textContent = "🌙";
+//   } else {
+//     // Switch to dark mode
+//     body.classList.add("dark");
+//     localStorage.setItem("theme", "dark");
+//     toggleBtn.textContent = "🌞";
+//   }
+// });
